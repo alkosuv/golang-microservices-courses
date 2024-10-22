@@ -1,0 +1,45 @@
+version: '3'
+services:
+  #  Наш сервис, который мы холтис запустить в докере
+  storage:
+    # Название контейнера
+    container_name: golang-microservices-courses-storage
+    # Путь до проекта для создания образа
+    build: ./
+    # Проброска портов из контейнера
+    ports:
+      - "9090:9090"
+    # Зависимость, после которой контейнер запускается
+    depends_on:
+      - db
+    # Внутриния сеть, чтобы контейнеры могли общаться
+    networks:
+      - mynetwork
+  # Описание базы данных
+  db:
+    # Образ для базы данных
+    image: postgres
+    # Название контейнера
+    container_name: golang-microservices-courses-posgresql
+    # Резервируемое место на жёском диске, которое монтируется для хронения статичных данных
+    volumes:
+      - golang-microservices-courses_dbdata:/var/lib/postgresql/data
+    # Проброска портов из контейнера
+    ports:
+      - "5432:5432"
+    # Переменные окружения
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+    # Внутриния сеть, чтобы контейнеры могли общаться
+    networks:
+      - mynetwork
+
+# Описвание конфига для volumes
+volumes:
+  golang-microservices-courses_dbdata:
+
+# Описвание конфига для  внутренней сети
+networks:
+  mynetwork:
+    driver: bridge
