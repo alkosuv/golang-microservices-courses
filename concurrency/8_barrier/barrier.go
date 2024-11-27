@@ -45,6 +45,10 @@ func NewBarrier(count int) *Barrier {
 }
 
 func (b *Barrier) refresh() {
+	if b.waiting == 0 {
+		return
+	}
+
 	b.mxRefresh.Lock()
 
 	fmt.Printf("waiting goroutines: %v\n", b.waitingGoroutineIDs)

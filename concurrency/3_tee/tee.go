@@ -13,7 +13,7 @@ import (
 	"sync"
 )
 
-func Tee(in chan string) (chan string, chan string) {
+func Tee(in <-chan string) (<-chan string, <-chan string) {
 	out1 := make(chan string)
 	out2 := make(chan string)
 
